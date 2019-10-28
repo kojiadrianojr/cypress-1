@@ -68,17 +68,30 @@ describe('Testing Frontoffice', function(){
 
         //Step 6. Id like to `View larger` the `Printed Chiffon Dress`
 	cy.get('#bigpic').click()
+	cy.get('a[title="Close"]').click()
         //Step 7. Id like to select these attributes:
                 // `Quantity` = `2` 
                 // `Size` = `M`
                 // `Color` = `Green`
-        cy.get('') 
+        cy.get('#buy_block').within(($form)=>{
+		cy.get('#quantity_wanted')
+		  .clear()
+		  .type('2')
+		  .should('have.value','2')
+		cy.get('#group_1').select('2')
+		  .should('have.value','2')
+		cy.get('li a[title="Green"]').click()
+		  .parent().should('have.class','selected')	
+	}) 
         //Step 8. Click `Add to Cart` 
-
+	cy.contains('Add to cart').click()
+	cy.get('#layer_cart').should('be.visible')
         //Step 9. Click `Proceed to Checkout`
-
+	cy.contains('Proceed to checkout').click()
+	cy.url()
+	  .should('includes','/index.php?controller=order')
         //Step 10. From `SHOPPING-CART SUMMARY` i want to `Continue shopping`
-
+	cy.get('a[title="Continue shopping"]').click() 
     })
 })
 
